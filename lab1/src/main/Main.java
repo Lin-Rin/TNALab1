@@ -1,4 +1,4 @@
-
+package main;
 
 // TODO
 // 1. Тест на простоту (Мiллера-Рабiна або Соловея-Штрассена)
@@ -9,10 +9,19 @@
 // 6. docker
 // 7. Run
 
+import java.util.Random;
+
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println("Work");
+
+        Random rand = new Random();
+        int num = 0;
+
+        for( int i = 0; i < 10000; i++){
+            num = rand.nextInt(10);
+            System.out.println(num);
+        }
     }
 
 }
