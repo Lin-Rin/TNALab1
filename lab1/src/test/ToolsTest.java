@@ -24,19 +24,16 @@ public class ToolsTest {
 
     @Test
     void JacobiTest(){
-        Assertions.assertEquals(Tools.Jacobi(3,  17), -1);
-        Assertions.assertEquals(Tools.Jacobi(10, 21), -1);
+        Assertions.assertEquals(Tools.jacobi(3,  17), -1);
+        Assertions.assertEquals(Tools.jacobi(10, 21), -1);
+        Assertions.assertEquals(Tools.jacobi(7, 35), 0);
 
-        Assertions.assertEquals(Tools.Jacobi(7, 35), 0);
-        Assertions.assertEquals(Tools.Jacobi(6, 36), -1);
+        Assertions.assertEquals(Tools.jacobi(2, 15), 1);
+        Assertions.assertEquals(Tools.jacobi(19, 35), -1);
+        Assertions.assertEquals(Tools.jacobi(13, 51), 1);
 
-        Assertions.assertEquals(Tools.Jacobi(2, 15), 1);
-        Assertions.assertEquals(Tools.Jacobi(19, 35), -1);
-
-        Assertions.assertEquals(Tools.Jacobi(13, 51), -1);
-        Assertions.assertEquals(Tools.Jacobi(3, 17), -1);
-
-        Assertions.assertEquals(Tools.Jacobi(31, 77), -1);
-        Assertions.assertEquals(Tools.Jacobi(5, 91), -1);
+        Assertions.assertEquals(Tools.jacobi(3, 17), -1);
+        Assertions.assertEquals(Tools.jacobi(31, 77), -1);
+        Assertions.assertEquals(Tools.jacobi(5, 91), 1);
     }
 }
