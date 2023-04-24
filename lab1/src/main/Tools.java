@@ -3,8 +3,8 @@ package main;
 public class Tools {
 
     // TODO  optimization
-    public static long GCD(long a, long b) {
-        return b == 0 ? a : GCD(b, a % b);
+    public static long gcd(long a, long b) {
+        return b == 0 ? a : gcd(b, a % b);
     }
 
     // TODO review

@@ -4,15 +4,28 @@ import java.util.Random;
 
 public class SimplicityTest {
 
-    private boolean test(long p, int k) {
-        throw new UnsupportedOperationException();
-    }
+    // TODO bug
+    public boolean isPrime(long p) {
+        if (p % 2 == 0)
+            return false;
 
-    public boolean isPrime(long a) {
-        throw new UnsupportedOperationException();
+        Random rand = new Random();
+
+        for (int k = 0; k < 100; k++) {
+            long x = rand.nextLong(p) + 1;
+            if (Tools.gcd(x, p) != 1)
+                return false;
+
+            if (Tools.jacobi(x, p) != Tools.power(x, p))
+                return false;
+        }
+        return true;
     }
 
     public static void main(String[] args) {
-        System.out.println("#");
+        for(int i = 0; i < 10000000; i++){
+            if(new SimplicityTest().isPrime(i))
+                System.out.println(new SimplicityTest().isPrime(i) + " " + i);
+        }
     }
 }
