@@ -66,17 +66,39 @@ public class Tools {
         return a == 1 ? s : s * jacobi(n, a);
     }
 
-    // TODO optimization
-    public static long power(long a, long p) {
-        long n = (p - 1) / 2;
-        long res = 0;
-
-        res = (long) (Math.pow(a, n) % p);
-
-        return res;
+    // TODO optimization ?enough?
+    public static double power(double a, double p) {
+        double n = (p - 1) / 2;
+        double answer = 1;
+        while (n != 0) {
+            if (n % 2 == 1) {
+                answer = (answer * a) % p;
+            }
+            a = Math.pow(a, 2) % p; // ???don't work with (long), why???
+            n /= 2;
+        }
+        return answer;
     }
 
+
+    private static double Power(double a, double p)
+    {
+        double n = (p - 1) / 2;
+        double answer = 1;
+        while (n != 0)
+        {
+            if (n % 2 == 1)
+                answer = (answer * a) % p;
+            a = Math.pow(a, 2) % p;
+            n = (n / 2);
+        }
+        return answer;
+    }
+
+
+
     public static void main(String[] args) {
-        System.out.println("res + " + jacobi(6, 36));
+        System.out.println(Power(13,127));
+        System.out.println(power(13,127));
     }
 }
