@@ -2,9 +2,35 @@ package main;
 
 public class Tools {
 
-    // TODO  optimization
-    public static long gcd(long a, long b) {
-        return b == 0 ? a : gcd(b, a % b);
+    // TODO review
+    public static int gcd(long a, long b) {
+        int d = 1;
+
+        while (a % 2 == 0 && b % 2 == 0) {
+            a /= 2;
+            b /= 2;
+            d *= 2;
+        }
+
+        while (a % 2 == 0) {
+            a /= 2;
+        }
+
+        while (b != 0) {
+            while (b % 2 == 0) {
+                b /= 2;
+            }
+            if (a > b) {
+                var temp = a;
+                a = b;
+                b = temp - a;
+            }else{
+                b -= a;
+            }
+        }
+
+        d *= a;
+        return d;
     }
 
     // TODO review
