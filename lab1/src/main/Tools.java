@@ -2,38 +2,17 @@ package main;
 
 public class Tools {
 
-    // TODO review
-    public static int gcd(long a, long b) {
-        int d = 1;
-
-        while (a % 2 == 0 && b % 2 == 0) {
-            a /= 2;
-            b /= 2;
-            d *= 2;
+    public static long gcd(long a, long b) {
+        if (b == 0) {
+            return a;
+        }
+        if (a == 0) {
+            return b;
         }
 
-        while (a % 2 == 0) {
-            a /= 2;
-        }
-
-        while (b != 0) {
-            while (b % 2 == 0) {
-                b /= 2;
-            }
-            if (a > b) {
-                var temp = a;
-                a = b;
-                b = temp - a;
-            }else{
-                b -= a;
-            }
-        }
-
-        d *= a;
-        return d;
+        return gcd(b, a % b);
     }
 
-    // TODO review
     public static int jacobi(long a, long n) {
         if (a < 0 || n % 2 == 0)
             throw new IllegalArgumentException("Wrong argument: (a, n) -- (" + a + ", " + n + ")");
@@ -66,39 +45,16 @@ public class Tools {
         return a == 1 ? s : s * jacobi(n, a);
     }
 
-    // TODO optimization ?enough?
-    public static double power(double a, double p) {
-        double n = (p - 1) / 2;
-        double answer = 1;
-        while (n != 0) {
-            if (n % 2 == 1) {
-                answer = (answer * a) % p;
+    public static long power(int a, int b, int n) {
+        int res = 1;
+        while (b > 0) {
+            if ((b & 1) == 1) {
+                res = (res * a) % n;
             }
-            a = Math.pow(a, 2) % p; // ???don't work with (long), why???
-            n /= 2;
+            a = (a * a) % n;
+            b >>= 1;
         }
-        return answer;
+        return res;
     }
 
-
-    private static double Power(double a, double p)
-    {
-        double n = (p - 1) / 2;
-        double answer = 1;
-        while (n != 0)
-        {
-            if (n % 2 == 1)
-                answer = (answer * a) % p;
-            a = Math.pow(a, 2) % p;
-            n = (n / 2);
-        }
-        return answer;
-    }
-
-
-
-    public static void main(String[] args) {
-        System.out.println(Power(13,127));
-        System.out.println(power(13,127));
-    }
 }

@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 public class ToolsTest {
 
     @Test
-    void GCDTest(){
+    void gcdTest(){
         Assertions.assertEquals(Tools.gcd(0, 0), 0);
         Assertions.assertEquals(Tools.gcd(0, 13), 13);
         Assertions.assertEquals(Tools.gcd(13, 0), 13);
@@ -23,7 +23,7 @@ public class ToolsTest {
     }
 
     @Test
-    void JacobiTest(){
+    void jacobiTest(){
         Assertions.assertEquals(Tools.jacobi(3,  17), -1);
         Assertions.assertEquals(Tools.jacobi(10, 21), -1);
         Assertions.assertEquals(Tools.jacobi(7, 35), 0);
@@ -35,5 +35,10 @@ public class ToolsTest {
         Assertions.assertEquals(Tools.jacobi(3, 17), -1);
         Assertions.assertEquals(Tools.jacobi(31, 77), -1);
         Assertions.assertEquals(Tools.jacobi(5, 91), 1);
+    }
+
+    @Test
+    void powerTest() {
+
     }
 }

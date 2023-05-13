@@ -1,31 +1,38 @@
 package main;
 
+import javax.tools.Tool;
 import java.util.Random;
 
 public class SimplicityTest {
 
     // TODO bug
-    public boolean isPrime(long p) {
-        if (p % 2 == 0)
+    public boolean isPrime(int p, int k) {
+        if (p <= 1 || p == 4) {
             return false;
+        }
+        if (p <= 3){
+            return true;
+        }
 
         Random rand = new Random();
 
-        for (int k = 0; k < 100; k++) {
-            long x = rand.nextLong(p) + 1;
-            if (Tools.gcd(x, p) != 1)
+        for (int i = 0; i < k; i++) {
+            int a = 2 + rand.nextInt(p - 3);
+            if (Tools.gcd(p, a) != 1) {
                 return false;
-
-            if (Tools.jacobi(x, p) != Tools.power(x, p))
+            }
+            if (Tools.power(a, (p - 1) / 2, p) != Tools.jacobi(a, p)) {
                 return false;
+            }
         }
+
         return true;
     }
 
     public static void main(String[] args) {
-        for(int i = 0; i < 10000000; i++){
-            if(new SimplicityTest().isPrime(i))
-                System.out.println(new SimplicityTest().isPrime(i) + " " + i);
+        for(int i = 0; i < 10; i++){
+            if(new SimplicityTest().isPrime(i, 100))
+                System.out.println(new SimplicityTest().isPrime(i, 100) + " " + i);
         }
     }
 }
