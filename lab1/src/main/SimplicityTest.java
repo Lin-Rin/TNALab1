@@ -1,6 +1,5 @@
 package main;
 
-import javax.tools.Tool;
 import java.util.Random;
 
 public class SimplicityTest {
@@ -32,7 +31,7 @@ public class SimplicityTest {
     public static void main(String[] args) {
         for(int i = 0; i < 10; i++){
             if(new SimplicityTest().isPrime(i, 100))
-                System.out.println(new SimplicityTest().isPrime(i, 100) + " " + i);
+                System.out.println(new SimplicityTest().isPrime(i, 4) + " " + i);
         }
     }
 }
