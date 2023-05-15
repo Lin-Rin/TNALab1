@@ -3,35 +3,32 @@ package main;
 import java.util.Random;
 
 public class SimplicityTest {
-
-    // TODO bug
-    public boolean isPrime(int p, int k) {
-        if (p <= 1 || p == 4) {
+    public static boolean isPrime(int p) {
+        if (p % 2 == 0) {
             return false;
         }
-        if (p <= 3){
-            return true;
+        Random random = new Random();
+        int x = random.nextInt(p);
+        if (x == 0) {
+            x++;
         }
-
-        Random rand = new Random();
-
-        for (int i = 0; i < k; i++) {
-            int a = 2 + rand.nextInt(p - 3);
-            if (Tools.gcd(p, a) != 1) {
+        if (x == p) {
+            x--;
+        }
+        int one;
+        for (int k = 0; k < 125; k++) {
+            if (Tools.gcd(p, x) > 1) {
                 return false;
             }
-            if (Tools.power(a, (p - 1) / 2, p) != Tools.jacobi(a, p)) {
+            if (Tools.power(x, p) == 1) {
+                one = 1;
+            } else {
+                one = -1;
+            }
+            if (one != Tools.jacobi(x, p)) {
                 return false;
             }
         }
-
         return true;
-    }
-
-    public static void main(String[] args) {
-        for(int i = 0; i < 10; i++){
-            if(new SimplicityTest().isPrime(i, 100))
-                System.out.println(new SimplicityTest().isPrime(i, 4) + " " + i);
-        }
     }
 }

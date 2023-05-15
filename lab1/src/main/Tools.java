@@ -45,16 +45,15 @@ public class Tools {
         return a == 1 ? s : s * jacobi(n, a);
     }
 
-    public static long power(int a, int b, int n) {
+    public static long power(int a, int n) {
         int res = 1;
-        while (b > 0) {
-            if ((b & 1) == 1) {
+        while (n > 0) {
+            if ((n & 1) == 1) {
                 res = (res * a) % n;
             }
             a = (a * a) % n;
-            b >>= 1;
+            n >>= 1;
         }
         return res;
     }
-
 }
