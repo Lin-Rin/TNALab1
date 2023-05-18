@@ -13,7 +13,7 @@ public class Tools {
         return gcd(b, a % b);
     }
 
-    public static int jacobi(long a, long n) {
+    public int jacobi(long a, long n) {
         if (a < 0 || n % 2 == 0)
             throw new IllegalArgumentException("Wrong argument: (a, n) -- (" + a + ", " + n + ")");
         if (a == 0)
@@ -45,8 +45,8 @@ public class Tools {
         return a == 1 ? s : s * jacobi(n, a);
     }
 
-    public static long power(int a, int n) {
-        int res = 1;
+    public static long power(long a, long n) {
+        long res = 1;
         while (n > 0) {
             if ((n & 1) == 1) {
                 res = (res * a) % n;

@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 
 public class ToolsTest {
 
+    private final Tools tools = new Tools();
+
     @Test
     void gcdTest(){
         Assertions.assertEquals(Tools.gcd(0, 0), 0);
@@ -24,21 +26,16 @@ public class ToolsTest {
 
     @Test
     void jacobiTest(){
-        Assertions.assertEquals(Tools.jacobi(3,  17), -1);
-        Assertions.assertEquals(Tools.jacobi(10, 21), -1);
-        Assertions.assertEquals(Tools.jacobi(7, 35), 0);
+        Assertions.assertEquals(tools.jacobi(3,  17), -1);
+        Assertions.assertEquals(tools.jacobi(10, 21), -1);
+        Assertions.assertEquals(tools.jacobi(7, 35), 0);
 
-        Assertions.assertEquals(Tools.jacobi(2, 15), 1);
-        Assertions.assertEquals(Tools.jacobi(19, 35), -1);
-        Assertions.assertEquals(Tools.jacobi(13, 51), 1);
+        Assertions.assertEquals(tools.jacobi(2, 15), 1);
+        Assertions.assertEquals(tools.jacobi(19, 35), -1);
+        Assertions.assertEquals(tools.jacobi(13, 51), 1);
 
-        Assertions.assertEquals(Tools.jacobi(3, 17), -1);
-        Assertions.assertEquals(Tools.jacobi(31, 77), -1);
-        Assertions.assertEquals(Tools.jacobi(5, 91), 1);
-    }
-
-    @Test
-    void powerTest() {
-
+        Assertions.assertEquals(tools.jacobi(3, 17), -1);
+        Assertions.assertEquals(tools.jacobi(31, 77), -1);
+        Assertions.assertEquals(tools.jacobi(5, 91), 1);
     }
 }
