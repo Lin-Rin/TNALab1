@@ -11,6 +11,8 @@ import java.util.*;
 
 public class Pomerance {
 
+    private static final WheelFactorization wheel1 = new WheelFactorization();
+
     private final Tools tool = new Tools();
     private final SimplicityTest test = new SimplicityTest();
 
@@ -18,7 +20,7 @@ public class Pomerance {
 
     public long pomeranceMethod(long n){
         long m = (long) Math.sqrt(n);
-        long[] B = buildBase(n);
+        ArrayList<Long> B = buildBase(n);
         long M = m; // rand?
         long a[] = calculateA(M, m);
         long b[] =calculateB(M, m, n);
@@ -28,32 +30,38 @@ public class Pomerance {
         return 0;
     }
 
-    private List<Long> factorization(long n, long[] base){
+    private List<Long> factorization(long n, ArrayList<Long> B) throws Exception {
         var res = new ArrayList<Long>();
         var wheel = new WheelFactorization();
+        var base = B.stream().mapToLong(Long::longValue).toArray();
 
         if (n < 0) {
             n = Math.abs(n);
             res.add(-1L);
         }
 
-        System.out.println(n);
-
-        var d = 0L;
-        while (n > 1){
-            d = wheel.trial(n, base);
-            System.out.println(d);
+        while (n > 1) {
+            var d = wheel.trial(n, base);
             res.add(d);
             n = n / d;
         }
 
+        var temp = res.get(res.size() - 1);
+        if( !B.contains(temp) ){
+            throw new Exception(temp + " do not factorize in factor base B");
+        }
         return res;
     }
 
-    public static void main(String[] args) {
-        long[] base = new long[]{-1, 2, 3};
-        System.out.println(new Pomerance().factorization(72, base));
+    public static void main(String[] args) throws Exception {
+        List<Long> base1 = Arrays.asList(-1L, 2L, 3L, 5L, 7L, 13L);
+        var base = new ArrayList<>(base1);
+        System.out.println(new Pomerance().factorization(-2730, base));
     }
+
+//    List<Long> base1 = Arrays.asList(-1L, 2L, 3L, 5L, 7L, 13L);
+//    var base = new ArrayList<>(base1);
+//    System.out.println(new Pomerance().factorization(-2730, base));
 
     /**
      q(x) = 0 mod(pi)
@@ -123,7 +131,7 @@ public class Pomerance {
         return res;
     }
 
-    private long[] buildBase(long n) {
+    private ArrayList<Long> buildBase(long n) {
         var res = new TreeSet<Long>();
         var temp = new TreeSet<Long>();
 
@@ -134,6 +142,7 @@ public class Pomerance {
             res.addAll(temp);
         }
 
-        return res.stream().mapToLong(Long::longValue).toArray();
+        // res.stream().mapToLong(Long::longValue).toArray();
+        return new ArrayList<>(res);
     }
 }

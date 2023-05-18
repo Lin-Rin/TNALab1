@@ -7,6 +7,10 @@ public class WheelFactorization {
 
     // TODO there the way to optimize code
     public long trial(long n, long[] primes) {
+        if(primes[0] == -1){
+            primes[0] = 2;
+        }
+
         for (long i : primes) {
             if (n % i == 0) {
                 return i;
