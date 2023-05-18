@@ -2,6 +2,13 @@ package main;
 
 import java.util.*;
 
+// TODO
+// factorization
+// solve
+// that we will reduce/remain/...
+// sieve
+// final step
+
 public class Pomerance {
 
     private final Tools tool = new Tools();
