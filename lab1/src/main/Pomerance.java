@@ -3,8 +3,7 @@ package main;
 import java.util.*;
 
 // TODO
-// factorization
-// solve
+// розвязати рівняння виду (x+m)^2 = n mod pi
 // that we will reduce/remain/...
 // sieve
 // final step
@@ -54,9 +53,7 @@ public class Pomerance {
     }
 
     public static void main(String[] args) throws Exception {
-        List<Long> base1 = Arrays.asList(-1L, 2L, 3L, 5L, 7L, 13L);
-        var base = new ArrayList<>(base1);
-        System.out.println(new Pomerance().factorization(-2730, base));
+
     }
 
 //    List<Long> base1 = Arrays.asList(-1L, 2L, 3L, 5L, 7L, 13L);
