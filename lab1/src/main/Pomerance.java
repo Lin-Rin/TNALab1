@@ -63,6 +63,67 @@ public class Pomerance {
 //    var base = new ArrayList<>(base1);
 //    System.out.println(new Pomerance().factorization(-2730, base));
 
+    public long[] rootmod(long n,long M, long pi) {
+        var res = new ArrayList<Long>();
+        long m = (long)Math.sqrt(n);
+        long y=0; // y = x + m
+
+        if (tool.jacobi(n,pi)==1){
+            if((pi - 3) % 4 == 0) {
+                y = (long) Math.pow(n, (pi + 1) / 4);
+                res.add((long) (y - m) % pi);
+                y = (long) Math.pow(-n, (pi + 1) / 4);
+                res.add((long) (y - m) % pi);
+                System.out.println("gg3232");
+            }
+        }
+
+        long pOne = pi - 1;
+        long Q = pOne;
+        int s = 0;
+
+        while (Q % 2 == 0) {
+            Q /= 2;
+            s++;
+        }
+
+        long z = 1;
+        while (tool.jacobi(z,pi) != -1){
+            z++;
+        }
+
+        long c = (long)Math.pow(z,Q) % pi;
+        long R = (long)Math.pow(n,(Q+1)/2) % pi;
+        long t = (long)Math.pow(n,Q) % pi;
+        long M1 = s;
+
+        while (t % pi != 1) {
+            System.out.println("gg566hfdhfh");
+            if (t % pi == 1){
+                y = R;
+                res.add((y-m));
+                y = pi-R;
+                res.add(y-m);
+
+            }
+            else{
+                int i;
+                for (i = 1; i < M; i++) {
+                    if (Math.pow(t,Math.pow(2,i)) % pi == 1) {
+                        break;
+                    }
+                }
+                long b = (long)Math.pow(c,Math.pow(2,M1-i-1)) % pi;
+                R = R*b % pi;
+                t = t*b*b % pi;
+                c = b*b % pi;
+                M1 = i;
+                System.out.println("gg566");
+            }
+
+        }
+        return res.stream().mapToLong(Long::longValue).toArray();
+    }
     /**
      q(x) = 0 mod(pi)
      (x + m)^2 = n mod pi
