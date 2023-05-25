@@ -1,6 +1,33 @@
 package main;
 
+import java.io.*;
+import java.util.ArrayList;
+
 public class Tools {
+
+    private final static String FILE_PATH = "lab1/src/res/primes100k.txt";
+
+    public long[] getPrimeNumbers() throws IOException {
+        InputStream srcFile = new FileInputStream(Tools.FILE_PATH);
+        ArrayList<Long> res = new ArrayList<>();
+
+        for(String s : readFromInputStream(srcFile).split("\n")){
+                res.add(Long.parseLong(s));
+        }
+
+        return res.stream().mapToLong(Long::longValue).toArray();
+    }
+
+    public String readFromInputStream(InputStream inputStream) throws IOException {
+        StringBuilder resultStringBuilder = new StringBuilder();
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                resultStringBuilder.append(line).append("\n");
+            }
+        }
+        return resultStringBuilder.toString();
+    }
 
     public static long gcd(long a, long b) {
         if (b == 0) {
