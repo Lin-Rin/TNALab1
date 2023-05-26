@@ -29,7 +29,7 @@ public class Tools {
         return resultStringBuilder.toString();
     }
 
-    public static long gcd(long a, long b) {
+    public long gcd(long a, long b) {
         if (b == 0) {
             return a;
         }
