@@ -22,10 +22,10 @@ public class SimplicityTest {
         }
 
         for (int k = 0; k < 125; k++) {
-            if (Tools.gcd(p, x) > 1) {
+            if (tool.gcd(p, x) > 1) {
                 return false;
             }
-            if (Tools.power(x, p) == 1) {
+            if (tool.power(x, p) == 1) {
                 one = 1;
             } else {
                 one = -1;
@@ -36,5 +36,11 @@ public class SimplicityTest {
         }
 
         return true;
+    }
+
+    public static void main(String[] args) {
+        for (int i = 0; i < 10; i++) {
+            System.out.println(new SimplicityTest().isPrime(15));
+        }
     }
 }
