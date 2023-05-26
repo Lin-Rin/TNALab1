@@ -6,7 +6,7 @@ import java.util.Random;
 
 public class RhoPollard {
 
-    public static long rhoPollard(long p) {
+    public long rhoPollard(long p) {
         //ArrayList<Long> dataBase1 = new ArrayList<>();
         //ArrayList<Long> dataBase2 = new ArrayList<>();
 
@@ -57,11 +57,12 @@ public class RhoPollard {
     }
 
     public static void main(String[] args) {
+        RhoPollard rhoPollard = new RhoPollard();
         long i = 1021514194991569L;
 
         try {
             long start = System.nanoTime();
-            long res = rhoPollard(i);
+            long res = rhoPollard.rhoPollard(i);
             long end = System.nanoTime();
             System.out.println(res + " time - " + (end - start));
 
