@@ -1,209 +1,141 @@
 package main;
 
+import java.io.IOException;
 import java.util.*;
 
 // TODO
-// factorization
-// solve
-// that we will reduce/remain/...
-// sieve
+// find zero vector
+// find x y
+// gcd
 // final step
 
 public class Pomerance {
 
-    private static final WheelFactorization wheel1 = new WheelFactorization();
-
     private final Tools tool = new Tools();
-    private final SimplicityTest test = new SimplicityTest();
 
     private final static double A = 1 / Math.sqrt(2);
+    private final static double LIM = 0.7;
 
-    public long pomeranceMethod(long n){
+    public long pomeranceMethod(long n) throws IOException {
         long m = (long) Math.sqrt(n);
-        ArrayList<Long> B = buildBase(n);
-        long M = m; // rand?
-        long a[] = calculateA(M, m);
-        long b[] =calculateB(M, m, n);
-        double logB[] = calculateLogB(b);
+        long M = m - 1; // rand?
+        ArrayList<Long> B = buildFactorBase(n);
+        long[] BB = B.stream().mapToLong(Long::longValue).toArray();
+        long x, y;
+
+        Map<Long, PomeranceObject> lines = new TreeMap<>();
+        Map<Long, TreeSet<Long>> solutions = new TreeMap<>();
+        Map<Long, PomeranceObject> result = new TreeMap<>();
+
+        for (int i = 1; i < BB.length; i++) {
+            var temp = solve(n, BB[i], M, m);
+            solutions.put(BB[i], temp);
+        }
+
+        for (long i = -M; i <= M; i++) {
+            lines.put(i, new PomeranceObject(i, n, m, M, getPi(solutions, i)));
+        }
+
+        try {
+            for (Map.Entry<Long, PomeranceObject> entry : lines.entrySet()) {
+                if (entry.getValue().getDifference() < LIM) {
+                    entry.getValue().setFactor(factorization(entry.getValue().getB(), B)
+                            .stream().mapToLong(Long::longValue).toArray());
+                    result.put(entry.getKey(), entry.getValue());
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
 
 
         return 0;
     }
 
-    private List<Long> factorization(long n, ArrayList<Long> B) throws Exception {
+    private ArrayList<Long> getPi(Map<Long, TreeSet<Long>> map, long x) {
+        ArrayList<Long> pi = new ArrayList<>();
+        for (Map.Entry<Long, TreeSet<Long>> entry : map.entrySet()) {
+            if (entry.getValue().contains(x)) {
+                pi.add(entry.getKey());
+            }
+        }
+
+        return pi;
+    }
+
+    private ArrayList<Long> factorization(long b, ArrayList<Long> B) throws Exception {
         var res = new ArrayList<Long>();
         var wheel = new WheelFactorization();
         var base = B.stream().mapToLong(Long::longValue).toArray();
 
-        if (n < 0) {
-            n = Math.abs(n);
+        if (b < 0) {
+            b = Math.abs(b);
             res.add(-1L);
         }
 
-        while (n > 1) {
-            var d = wheel.trial(n, base);
+        while (b > 1) {
+            var d = wheel.trial(b, base);
             res.add(d);
-            n = n / d;
+            b = b / d;
         }
 
         var temp = res.get(res.size() - 1);
-        if( !B.contains(temp) ){
+        if (!B.contains(temp)) {
             throw new Exception(temp + " do not factorize in factor base B");
         }
+
         return res;
     }
 
     public static void main(String[] args) throws Exception {
-        List<Long> base1 = Arrays.asList(-1L, 2L, 3L, 5L, 7L, 13L);
-        var base = new ArrayList<>(base1);
-        System.out.println(new Pomerance().factorization(-2730, base));
+        var temp = new ArrayList<Long>();
+        temp.add(-1L);
+        temp.add(2L);
+        temp.add(3L);
+        temp.add(7L);
+        temp.add(31L);
+
+        System.out.println(new Pomerance().factorization(93 * 3, temp));
     }
 
-//    List<Long> base1 = Arrays.asList(-1L, 2L, 3L, 5L, 7L, 13L);
-//    var base = new ArrayList<>(base1);
-//    System.out.println(new Pomerance().factorization(-2730, base));
+    private TreeSet<Long> solve(long n, long pi, long M, long m) {
+        TonelliShanksAlgorithmLong solution = new TonelliShanksAlgorithmLong();
+        long[] roots = solution.getSolution(n, pi);
+        var res = new TreeSet<Long>();
 
-    public long[] rootmod(long n,long M, long pi) {
-        var res = new ArrayList<Long>();
-        long m = (long)Math.sqrt(n);
-        long y=0; // y = x + m
-
-        if (tool.jacobi(n,pi)==1){
-            if((pi - 3) % 4 == 0) {
-                y = (long) Math.pow(n, (pi + 1) / 4);
-                res.add((long) (y - m) % pi);
-                y = (long) Math.pow(-n, (pi + 1) / 4);
-                res.add((long) (y - m) % pi);
-                System.out.println("gg3232");
-            }
+        long root1 = (roots[0] - m) % pi;
+        long root2 = (roots[1] - m) % pi;
+        for (long i = -(M / pi); i <= (M / pi); i++) {
+            res.add(root1 + i * pi);
+            res.add(root2 + i * pi);
         }
 
-        long pOne = pi - 1;
-        long Q = pOne;
-        int s = 0;
-
-        while (Q % 2 == 0) {
-            Q /= 2;
-            s++;
-        }
-
-        long z = 1;
-        while (tool.jacobi(z,pi) != -1){
-            z++;
-        }
-
-        long c = (long)Math.pow(z,Q) % pi;
-        long R = (long)Math.pow(n,(Q+1)/2) % pi;
-        long t = (long)Math.pow(n,Q) % pi;
-        long M1 = s;
-
-        while (t % pi != 1) {
-            System.out.println("gg566hfdhfh");
-            if (t % pi == 1){
-                y = R;
-                res.add((y-m));
-                y = pi-R;
-                res.add(y-m);
-
-            }
-            else{
-                int i;
-                for (i = 1; i < M; i++) {
-                    if (Math.pow(t,Math.pow(2,i)) % pi == 1) {
-                        break;
-                    }
-                }
-                long b = (long)Math.pow(c,Math.pow(2,M1-i-1)) % pi;
-                R = R*b % pi;
-                t = t*b*b % pi;
-                c = b*b % pi;
-                M1 = i;
-                System.out.println("gg566");
-            }
-
-        }
-        return res.stream().mapToLong(Long::longValue).toArray();
-    }
-    /**
-     q(x) = 0 mod(pi)
-     (x + m)^2 = n mod pi
-     ?n/pi == 1? jacobi, !=1 skip
-     find x
-     next for each xi: xi + kn from [-M, M]
-
-     solve all mod
-     return array x1, x1+p, ...
-     **/
-    public long[] solve(){
-        throw new UnsupportedOperationException();
+        // convert
+        // new ArrayList<>(res)
+        return res;
     }
 
-    private long[] calculateA(long x, long m){
-        var res = new ArrayList<Long>();
-
-        for(long i = -x; i <= x; i++){
-            res.add(i + m);
-        }
-
-        return res.stream().mapToLong(Long::longValue).toArray();
-    }
-
-    private long[] calculateB(long x, long m, long n){
-        var res = new ArrayList<Long>();
-
-        for(long i = -x; i <= x; i++){
-            res.add((long) Math.pow(i + m, 2) - n);
-        }
-
-        return res.stream().mapToLong(Long::longValue).toArray();
-    }
-
-    private double[] calculateLogB(long[] b){
-        var res = new ArrayList<Double>();
-
-        for (long i : b) {
-            res.add(Math.log10(Math.abs(i)));
-        }
-
-        return res.stream().mapToDouble(Double::doubleValue).toArray();
-    }
-
-    private static long getL(long n, double a){
+    private static long getL(long n, double a) {
         return (long) Math.pow(Math.exp(Math.sqrt(log2(n) * log2(n))), a);
     }
 
-    private static double log2(double num){
+    private static double log2(double num) {
         return Math.log(num) / Math.log(2);
     }
 
-    private TreeSet<Long> buildFactorBase(long n){
-        var res = new TreeSet<Long>();
+    private ArrayList<Long> buildFactorBase(long n) throws IOException {
+        var primeList = tool.getPrimeNumbers();
+        var res = new ArrayList<Long>();
         res.add(-1L);
-        long L = getL(n, A);
+        //long L = getL(n, A);
 
-        for (long i = 2; i < L; i++) {
-            if(test.isPrime(i)){
-                if(tool.jacobi(n, i) == 1){
-                    res.add(i);
-                }
+        for (int i = 0; i < primeList.length; i++) {
+            if (tool.jacobi(n, primeList[i]) == 1) {
+                res.add(primeList[i]);
             }
         }
 
         return res;
-    }
-
-    private ArrayList<Long> buildBase(long n) {
-        var res = new TreeSet<Long>();
-        var temp = new TreeSet<Long>();
-
-        res = buildFactorBase(n);
-
-        for (int i =0; i < 5; i++) {
-            temp = buildFactorBase(n);
-            res.addAll(temp);
-        }
-
-        // res.stream().mapToLong(Long::longValue).toArray();
-        return new ArrayList<>(res);
     }
 }
