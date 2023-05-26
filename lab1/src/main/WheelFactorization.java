@@ -1,5 +1,7 @@
 package main;
 
+import java.util.ArrayList;
+
 public class WheelFactorization {
 
     private final long[] nums = new long[]
@@ -11,6 +13,16 @@ public class WheelFactorization {
             primes[0] = 2;
         }
 
+        for (long i : primes) {
+            if (n % i == 0) {
+                return i;
+            }
+        }
+
+        return n;
+    }
+
+    public long trial(long n, ArrayList<Long> primes) {
         for (long i : primes) {
             if (n % i == 0) {
                 return i;
