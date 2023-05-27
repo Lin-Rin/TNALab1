@@ -31,6 +31,8 @@ public class Pomerance {
         ArrayList<Long> B = buildFactorBase(n);
         long[] BB = B.stream().mapToLong(Long::longValue).toArray();
         long x = 0, y = 0;
+        var listX = new ArrayList<Long>();
+        var listY = new ArrayList<Long>();
 
         Map<Long, PomeranceObject> lines = new TreeMap<>();
         Map<Long, TreeSet<Long>> solutions = new TreeMap<>();
@@ -41,15 +43,15 @@ public class Pomerance {
         System.out.println("m = " + m);
         System.out.println("M = " + M);
 
-        System.out.println("solution pi=2: " + solve(1649, 2, 5, m));
-        System.out.println("solution pi=5: " + solve(1649, 5, 5, m));
-        System.out.println("solution pi=7: " + solve(1649, 7, 5, m));
+        //System.out.println("solution pi=2: " + solve(1649, 2, 5, m));
+        //System.out.println("solution pi=5: " + solve(1649, 5, 5, m));
+        //System.out.println("solution pi=7: " + solve(1649, 7, 5, m));
 
         for (int i = 1; i < BB.length; i++) {
             var temp = solve(n, BB[i], M, m);
             solutions.put(BB[i], temp);
 
-            //System.out.println(temp);
+            // System.out.println(BB[i] + " " + temp);
         }
 
         for (long i = -M; i <= M; i++) {
@@ -58,9 +60,10 @@ public class Pomerance {
 
         System.out.println();
         // show solution for pi
-        for (Map.Entry<Long, TreeSet<Long>> entry : solutions.entrySet()){
+        //for (Map.Entry<Long, TreeSet<Long>> entry : solutions.entrySet()){
             //System.out.println(entry.getKey() + " " + entry.getValue());
-        }
+        //}
+
         System.out.println();
         for (Map.Entry<Long, PomeranceObject> entry : lines.entrySet()) {
             try {
@@ -81,15 +84,21 @@ public class Pomerance {
                     + Arrays.toString(entry.getValue().getVector(BB)));
         }
 
-        // cal x y if there is one zero element
+        // TODO
+        // cal x y if there is one zero element + add to listX/Y
         for (Map.Entry<Long, PomeranceObject> entry : result.entrySet()) {
             if (isItZeroElement(entry.getValue().getVector(BB))) {
-                x = entry.getValue().getA();
-                y = (long) Math.sqrt(entry.getValue().getB());
+                listX.add(entry.getValue().getA());
+                listY.add(entry.getValue().getB());
+                break;
             }
         }
 
+        x = listX.stream().reduce(1L , (a,b) -> a * b);
+        y = (long) Math.sqrt(listY.stream().reduce(1L , (a,b) -> a * b));
+
         if (x % n != y) {
+            System.out.println(132);
             return new long[]{tool.gcd(x - y, n), tool.gcd(x + y, n),};
         }
 
@@ -97,8 +106,8 @@ public class Pomerance {
     }
 
     public static void main(String[] args) throws IOException {
-        // System.out.println(Arrays.toString(new Pomerance().pomeranceMethod(91L)));
-        System.out.println(Arrays.toString(new Pomerance().pomeranceMethod(1649L)));
+        //System.out.println(Arrays.toString(new Pomerance().pomeranceMethod(91L)));
+        System.out.println(Arrays.toString(new Pomerance().pomeranceMethod(7553819174857L)));
 
         // show parameters
     }
@@ -166,6 +175,8 @@ public class Pomerance {
         var res = new ArrayList<Long>();
         res.add(-1L);
         long L = (long) Math.pow(Math.exp(Math.sqrt(log2(n) * log2(log2(n)))), A);
+
+        System.out.println(L);
 
         if (n % 2 == 1) {
             res.add(2L);

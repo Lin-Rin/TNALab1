@@ -5,15 +5,62 @@ import java.util.ArrayList;
 
 public class Tools {
 
-    private final static String FILE_PATH = "lab1/src/res/primes100k.txt";
+    private final static String FILE_PATH1  = "lab1/src/res/primes100k.txt";
+    private final static String FILE_PATH2  = "lab1/src/res/primes200k.txt";
+    private final static String FILE_PATH3  = "lab1/src/res/primes300k.txt";
+    private final static String FILE_PATH4  = "lab1/src/res/primes400k.txt";
+    private final static String FILE_PATH5  = "lab1/src/res/primes500k.txt";
+    private final static String FILE_PATH6  = "lab1/src/res/primes600k.txt";
+    private final static String FILE_PATH7  = "lab1/src/res/primes700k.txt";
+    private final static String FILE_PATH8  = "lab1/src/res/primes800k.txt";
+    private final static String FILE_PATH9  = "lab1/src/res/primes900k.txt";
+    private final static String FILE_PATH10 = "lab1/src/res/primes1000k.txt";
 
     public long[] getPrimeNumbers() throws IOException {
-        InputStream srcFile = new FileInputStream(Tools.FILE_PATH);
+        InputStream srcFile1  = new FileInputStream(Tools.FILE_PATH1);
+        InputStream srcFile2  = new FileInputStream(Tools.FILE_PATH2);
+        InputStream srcFile3  = new FileInputStream(Tools.FILE_PATH3);
+        InputStream srcFile4  = new FileInputStream(Tools.FILE_PATH4);
+        InputStream srcFile5  = new FileInputStream(Tools.FILE_PATH5);
+        InputStream srcFile6  = new FileInputStream(Tools.FILE_PATH6);
+        InputStream srcFile7  = new FileInputStream(Tools.FILE_PATH7);
+        InputStream srcFile8  = new FileInputStream(Tools.FILE_PATH8);
+        InputStream srcFile9  = new FileInputStream(Tools.FILE_PATH9);
+        InputStream srcFile10 = new FileInputStream(Tools.FILE_PATH10);
         ArrayList<Long> res = new ArrayList<>();
 
-        for(String s : readFromInputStream(srcFile).split("\n")){
+        for(String s : readFromInputStream(srcFile1).split("\n")){
                 res.add(Long.parseLong(s));
         }
+        for(String s : readFromInputStream(srcFile2).split("\n")){
+            res.add(Long.parseLong(s));
+        }
+        for(String s : readFromInputStream(srcFile3).split("\n")){
+            res.add(Long.parseLong(s));
+        }
+        for(String s : readFromInputStream(srcFile4).split("\n")){
+            res.add(Long.parseLong(s));
+        }
+        for(String s : readFromInputStream(srcFile5).split("\n")){
+            res.add(Long.parseLong(s));
+        }
+        for(String s : readFromInputStream(srcFile6).split("\n")){
+            res.add(Long.parseLong(s));
+        }
+        for(String s : readFromInputStream(srcFile7).split("\n")){
+            res.add(Long.parseLong(s));
+        }
+        for(String s : readFromInputStream(srcFile8).split("\n")){
+            res.add(Long.parseLong(s));
+        }
+        for(String s : readFromInputStream(srcFile9).split("\n")){
+            res.add(Long.parseLong(s));
+        }
+        for(String s : readFromInputStream(srcFile10).split("\n")){
+            res.add(Long.parseLong(s));
+        }
+
+        System.out.println(res.size());
 
         return res.stream().mapToLong(Long::longValue).toArray();
     }
