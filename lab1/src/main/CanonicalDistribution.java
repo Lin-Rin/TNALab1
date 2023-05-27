@@ -69,8 +69,13 @@ public class CanonicalDistribution {
         CanonicalDistribution canon = new CanonicalDistribution(2500744714570633849L);
 
         System.out.println(canon.getDistribution());
-        System.out.println(43*58156853827224043L);
         System.out.println(43*7699*7553819174857L);
         System.out.println(2500744714570633849L);
+
+        CanonicalDistribution canon2 = new CanonicalDistribution(7442109405582674149L);
+
+        System.out.println(canon2.getDistribution());
+        System.out.println(37*6469*31092609683533L);
+        System.out.println(7442109405582674149L);
     }
 }

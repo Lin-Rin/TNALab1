@@ -72,7 +72,7 @@ public class Tools {
         return a == 1 ? s : s * jacobi(n, a);
     }
 
-    public static long power(long a, long n) {
+    public long power(long a, long n) {
         long res = 1;
         while (n > 0) {
             if ((n & 1) == 1) {
