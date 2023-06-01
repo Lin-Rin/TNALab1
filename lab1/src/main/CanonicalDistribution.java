@@ -1,5 +1,6 @@
 package main;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class CanonicalDistribution {
@@ -33,6 +34,7 @@ public class CanonicalDistribution {
     private final SimplicityTest primeTest = new SimplicityTest();
     private final WheelFactorization wheel = new WheelFactorization();
     private final RhoPollard rhoPollard = new RhoPollard();
+    private final Pomerance pomerance = new Pomerance();
 
     public CanonicalDistribution(long n){
         this.n = n;
@@ -57,10 +59,24 @@ public class CanonicalDistribution {
         n = result.get(result.size() - 1);
         result.remove(result.size() - 1);
 
-        var temp1 = rhoPollard.rhoPollard(n);
-        var temp2 = n / temp1;
-        result.add(temp1);
-        result.add(temp2);
+        var rho = rhoPollard.rhoPollard(n);
+        n = n / rho;
+        result.add(rho);
+
+        //long[] pom;
+        //try {
+        //        pom = pomerance.pomeranceMethod(n);
+        //    } catch (IOException e) {
+        //        throw new RuntimeException(e);
+        //    }
+        //var res1 = pom[0];
+        //var res2 = pom[1];
+        //result.add(res1);
+        //result.add(res2);
+
+        var rho2 = rhoPollard.rhoPollard(n);
+        result.add(rho2);
+        result.add(n / rho2);
 
         return result;
     }
@@ -69,13 +85,13 @@ public class CanonicalDistribution {
         CanonicalDistribution canon = new CanonicalDistribution(2500744714570633849L);
 
         System.out.println(canon.getDistribution());
-        System.out.println(43*7699*7553819174857L);
+        System.out.println(43*7699*303983L*24849479L);
         System.out.println(2500744714570633849L);
 
-        CanonicalDistribution canon2 = new CanonicalDistribution(7442109405582674149L);
+        //CanonicalDistribution canon2 = new CanonicalDistribution(7442109405582674149L);
 
-        System.out.println(canon2.getDistribution());
-        System.out.println(37*6469*31092609683533L);
-        System.out.println(7442109405582674149L);
+        //System.out.println(canon2.getDistribution());
+        //System.out.println(37*6469*31092609683533L);
+        //System.out.println(7442109405582674149L);
     }
 }

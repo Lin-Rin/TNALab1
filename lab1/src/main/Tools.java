@@ -60,8 +60,6 @@ public class Tools {
             res.add(Long.parseLong(s));
         }
 
-        System.out.println(res.size());
-
         return res.stream().mapToLong(Long::longValue).toArray();
     }
 

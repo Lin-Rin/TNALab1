@@ -27,7 +27,7 @@ public class Pomerance {
 
     public long[] pomeranceMethod(long n) throws IOException {
         long m = (long) Math.sqrt(n);
-        long M = m - 1; // rand?
+        long M = (m/2) + 1; // rand?
         ArrayList<Long> B = buildFactorBase(n);
         long[] BB = B.stream().mapToLong(Long::longValue).toArray();
         long x = 0, y = 0;
@@ -43,28 +43,24 @@ public class Pomerance {
         System.out.println("m = " + m);
         System.out.println("M = " + M);
 
-        //System.out.println("solution pi=2: " + solve(1649, 2, 5, m));
-        //System.out.println("solution pi=5: " + solve(1649, 5, 5, m));
-        //System.out.println("solution pi=7: " + solve(1649, 7, 5, m));
-
         for (int i = 1; i < BB.length; i++) {
             var temp = solve(n, BB[i], M, m);
             solutions.put(BB[i], temp);
-
-            // System.out.println(BB[i] + " " + temp);
         }
 
+        System.out.println("#1");
         for (long i = -M; i <= M; i++) {
             lines.put(i, new PomeranceObject(i, n, m, M, getPi(solutions, i)));
         }
 
-        System.out.println();
+        //System.out.println();
         // show solution for pi
         //for (Map.Entry<Long, TreeSet<Long>> entry : solutions.entrySet()){
             //System.out.println(entry.getKey() + " " + entry.getValue());
         //}
 
-        System.out.println();
+
+        System.out.println("#2");
         for (Map.Entry<Long, PomeranceObject> entry : lines.entrySet()) {
             try {
                 if (entry.getValue().getDifference() < LIM) {
@@ -79,11 +75,13 @@ public class Pomerance {
         }
 
         // show table
-        for (Map.Entry<Long, PomeranceObject> entry : result.entrySet()) {
-            System.out.println(entry.getKey() + " " + entry.getValue()
-                    + Arrays.toString(entry.getValue().getVector(BB)));
-        }
+        //for (Map.Entry<Long, PomeranceObject> entry : result.entrySet()) {
+        //    System.out.println(entry.getKey() + " " + entry.getValue()
+        //            + Arrays.toString(entry.getValue().getVector(BB)));
+        //}
 
+
+        System.out.println("#3");
         // TODO
         // cal x y if there is one zero element + add to listX/Y
         for (Map.Entry<Long, PomeranceObject> entry : result.entrySet()) {
@@ -94,11 +92,11 @@ public class Pomerance {
             }
         }
 
+        System.out.println("#4");
         x = listX.stream().reduce(1L , (a,b) -> a * b);
         y = (long) Math.sqrt(listY.stream().reduce(1L , (a,b) -> a * b));
 
         if (x % n != y) {
-            System.out.println(132);
             return new long[]{tool.gcd(x - y, n), tool.gcd(x + y, n),};
         }
 
@@ -107,7 +105,8 @@ public class Pomerance {
 
     public static void main(String[] args) throws IOException {
         //System.out.println(Arrays.toString(new Pomerance().pomeranceMethod(91L)));
-        System.out.println(Arrays.toString(new Pomerance().pomeranceMethod(7553819174857L)));
+        System.out.println(Arrays.toString(new Pomerance().pomeranceMethod(37*6469L)));
+        //System.out.println(Arrays.toString(new Pomerance().pomeranceMethod(7553819174857L)));
 
         // show parameters
     }
@@ -175,8 +174,6 @@ public class Pomerance {
         var res = new ArrayList<Long>();
         res.add(-1L);
         long L = (long) Math.pow(Math.exp(Math.sqrt(log2(n) * log2(log2(n)))), A);
-
-        System.out.println(L);
 
         if (n % 2 == 1) {
             res.add(2L);

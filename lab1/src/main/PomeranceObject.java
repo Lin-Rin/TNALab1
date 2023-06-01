@@ -44,7 +44,7 @@ public class PomeranceObject {
         var that    = Math.floor(pi.stream().mapToDouble(Math::log10).sum() * 1000) / 1000;
         difference = logB - that;
 
-        System.out.println(x + " " + pi);
+        //System.out.println(x + " " + pi);
     }
 
     public double getDifference() {
