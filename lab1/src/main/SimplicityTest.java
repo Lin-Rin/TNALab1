@@ -10,7 +10,7 @@ public class SimplicityTest {
             return false;
         }
 
-        for (int k = 0; k < 125; k++) {
+        for (int k = 0; k < 1000; k++) {
             Random random = new Random();
             long x = random.nextLong(p);
 

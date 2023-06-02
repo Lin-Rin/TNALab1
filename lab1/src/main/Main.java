@@ -12,6 +12,7 @@ package main;
 import java.util.Scanner;
 
 public class Main {
+
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
 
@@ -19,10 +20,10 @@ public class Main {
         System.out.print("Enter number: ");
         var input = in.nextLong();
         try {
-            System.out.println("Result is: " + new CanonicalDistribution(input).getDistribution());
+            System.out.println("\nResult is: " + new CanonicalDistribution(input).getDistribution());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
     }
+
 }

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 public class CanonicalDistribution {
 
-
     private long n;
     private final long[] arrPrime = new long[]{2, 3, 5, 7, 11, 17, 19, 23, 29, 31, 37, 41, 43, 47};
     private final ArrayList<Long> listPrime = getListPrimes();
@@ -36,6 +35,11 @@ public class CanonicalDistribution {
 
         n = result.get(result.size() - 1);
         result.remove(result.size() - 1);
+
+        if(listPrime.contains(n)){
+            result.add(n);
+            return result;
+        }
 
         long rho;
         while (!primeTest.isPrime(n)) {
