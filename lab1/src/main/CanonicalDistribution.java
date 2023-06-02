@@ -1,9 +1,91 @@
 package main;
 
-import java.io.IOException;
+import org.apache.commons.math3.primes.Primes;
+
 import java.util.ArrayList;
 
 public class CanonicalDistribution {
+
+
+
+    private long n;
+    private final long[] arrPrime = new long[]{2, 3, 5, 7, 11, 17, 19, 23, 29, 31, 37, 41, 43, 47};
+    private final ArrayList<Long> listPrime = getListPrimes();
+
+    private final SimplicityTest primeTest = new SimplicityTest();
+    private final WheelFactorization wheel = new WheelFactorization();
+    private final RhoPollard rhoPollard = new RhoPollard();
+    private final Pomerance pomerance = new Pomerance();
+
+    public CanonicalDistribution(long n){
+        this.n = n;
+    }
+
+    public ArrayList<Long> getDistribution() {
+        ArrayList<Long> result = new ArrayList<>();
+
+        // if (!primeTest.isPrime(n)) {
+        //     result.add(n);
+        //     return result;
+        // }
+
+        // if (Primes.isPrime((int) n)) {
+        //     result.add(n);
+        //     return result;
+        // }
+
+        for (long i : arrPrime) {
+            long a = wheel.trial(n, listPrime);
+            n = n / a;
+            if (a != 1) {
+                result.add(a);
+            }
+        }
+
+        n = result.get(result.size() - 1);
+        result.remove(result.size() - 1);
+
+        long rho;
+        //while (!primeTest.isPrime(n)) {
+            rho = rhoPollard.rhoPollard(n);
+            result.add(rho);
+            n = n / rho;
+        //}
+
+        // long rho;
+        // while (!Primes.isPrime((int) n)) {
+        //     rho = rhoPollard.rhoPollard(n);
+        //     result.add(rho);
+        //     n = n / rho;
+        // }
+
+        result.add(n);
+
+        // TODO do not work properly
+        /*long[] pom;
+        try {
+                pom = pomerance.pomeranceMethod(n);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        var res1 = pom[0];
+        var res2 = pom[1];
+        result.add(res1);
+        result.add(res2);
+        */
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+        //CanonicalDistribution canon = new CanonicalDistribution(2500744714570633849L);
+        //CanonicalDistribution canon = new CanonicalDistribution(256*53);
+
+        //System.out.println(canon.getDistribution());
+        System.out.println(43*7699*303983L);
+        //System.out.println(43*7699*303983L*24849479L);
+        //System.out.println(2500744714570633849L);
+    }
 
     private ArrayList<Long> getListPrimes(){
         ArrayList<Long> res = new ArrayList<>();
@@ -27,71 +109,4 @@ public class CanonicalDistribution {
         return res;
     }
 
-    private long n;
-    private final long[] arrPrime = new long[]{2, 3, 5, 7, 11, 17, 19, 23, 29, 31, 37, 41, 43, 47};
-    private final ArrayList<Long> listPrime = getListPrimes();
-
-    private final SimplicityTest primeTest = new SimplicityTest();
-    private final WheelFactorization wheel = new WheelFactorization();
-    private final RhoPollard rhoPollard = new RhoPollard();
-    private final Pomerance pomerance = new Pomerance();
-
-    public CanonicalDistribution(long n){
-        this.n = n;
-    }
-
-    public ArrayList<Long> getDistribution() {
-        ArrayList<Long> result = new ArrayList<>();
-
-        //if (!test.isPrime(n)) {
-        //    result.add(n);
-        //    return result;
-        //}
-
-        for (long i : arrPrime) {
-            long a = wheel.trial(n, listPrime);
-            n = n / a;
-            if (a != 1) {
-                result.add(a);
-            }
-        }
-
-        n = result.get(result.size() - 1);
-        result.remove(result.size() - 1);
-
-        var rho = rhoPollard.rhoPollard(n);
-        n = n / rho;
-        result.add(rho);
-
-        //long[] pom;
-        //try {
-        //        pom = pomerance.pomeranceMethod(n);
-        //    } catch (IOException e) {
-        //        throw new RuntimeException(e);
-        //    }
-        //var res1 = pom[0];
-        //var res2 = pom[1];
-        //result.add(res1);
-        //result.add(res2);
-
-        var rho2 = rhoPollard.rhoPollard(n);
-        result.add(rho2);
-        result.add(n / rho2);
-
-        return result;
-    }
-
-    public static void main(String[] args) {
-        CanonicalDistribution canon = new CanonicalDistribution(2500744714570633849L);
-
-        System.out.println(canon.getDistribution());
-        System.out.println(43*7699*303983L*24849479L);
-        System.out.println(2500744714570633849L);
-
-        //CanonicalDistribution canon2 = new CanonicalDistribution(7442109405582674149L);
-
-        //System.out.println(canon2.getDistribution());
-        //System.out.println(37*6469*31092609683533L);
-        //System.out.println(7442109405582674149L);
-    }
 }

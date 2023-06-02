@@ -5,19 +5,17 @@ package main;
 // 2. DONE Метод пробних дiлень
 // 3. DONE ρ-метод Полларда DONE
 // 4. Метод Померанця
-// 5. Канонічний розклад ....
-// 6. docker
-// 7. Run
+// 5. DONE Канонічний розклад ....
+// 6. DONE docker
+// 7. DONE Run
 
-import java.io.IOException;
-import java.util.Arrays;
 import java.util.Scanner;
-import java.util.TreeMap;
 
 public class Main {
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
 
+        System.out.println("Welcome! (test)");
         System.out.print("Enter number: ");
         var input = in.nextLong();
         try {
