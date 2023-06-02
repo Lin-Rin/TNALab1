@@ -1,10 +1,10 @@
 package main;
 
 // TODO
-// 1. issue Тест на простоту (Мiллера-Рабiна або Соловея-Штрассена)
+// 1. DONE Тест на простоту (Мiллера-Рабiна або Соловея-Штрассена)
 // 2. DONE Метод пробних дiлень
 // 3. DONE ρ-метод Полларда DONE
-// 4. Метод Померанця
+// 4. issue Метод Померанця
 // 5. DONE Канонічний розклад ....
 // 6. DONE docker
 // 7. DONE Run
@@ -21,9 +21,8 @@ public class Main {
         try {
             System.out.println("Result is: " + new CanonicalDistribution(input).getDistribution());
         } catch (Exception e) {
-            System.out.println(e.getMessage());;
+            System.out.println(e.getMessage());
         }
 
     }
 }
-

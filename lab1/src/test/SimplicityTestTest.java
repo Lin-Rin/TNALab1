@@ -189,4 +189,23 @@ public class SimplicityTestTest {
 
         Assertions.assertFalse(Arrays.equals(expected, actual));
     }
+
+    @Test
+    void noSurePrimeTest6() {
+        boolean[] expected = new boolean[]{
+                true, true, true, true, true, true, true, true, true, true,
+                true, true, true, true, true, true, true, true, true, true,
+                true, true, true, true, true, true, true, true, true, true,
+                true, true, true, true, true, true, true, true, true, true,
+                true, true, true, true, true, true, true, true, true, true
+        };
+        boolean[] actual = new boolean[expected.length];
+
+        for (int i = 0; i < expected.length; i++) {
+            actual[i] = test.isPrime(2500744714570633849L);
+        }
+
+        System.out.println(Arrays.toString(actual));
+        Assertions.assertFalse(Arrays.equals(expected, actual));
+    }
 }

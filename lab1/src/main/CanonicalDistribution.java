@@ -1,11 +1,8 @@
 package main;
 
-import org.apache.commons.math3.primes.Primes;
-
 import java.util.ArrayList;
 
 public class CanonicalDistribution {
-
 
 
     private long n;
@@ -17,22 +14,17 @@ public class CanonicalDistribution {
     private final RhoPollard rhoPollard = new RhoPollard();
     private final Pomerance pomerance = new Pomerance();
 
-    public CanonicalDistribution(long n){
+    public CanonicalDistribution(long n) {
         this.n = n;
     }
 
     public ArrayList<Long> getDistribution() {
         ArrayList<Long> result = new ArrayList<>();
 
-        // if (!primeTest.isPrime(n)) {
-        //     result.add(n);
-        //     return result;
-        // }
-
-        // if (Primes.isPrime((int) n)) {
-        //     result.add(n);
-        //     return result;
-        // }
+        if (primeTest.isPrime(n)) {
+            result.add(n);
+            return result;
+        }
 
         for (long i : arrPrime) {
             long a = wheel.trial(n, listPrime);
@@ -46,18 +38,11 @@ public class CanonicalDistribution {
         result.remove(result.size() - 1);
 
         long rho;
-        //while (!primeTest.isPrime(n)) {
+        while (!primeTest.isPrime(n)) {
             rho = rhoPollard.rhoPollard(n);
             result.add(rho);
             n = n / rho;
-        //}
-
-        // long rho;
-        // while (!Primes.isPrime((int) n)) {
-        //     rho = rhoPollard.rhoPollard(n);
-        //     result.add(rho);
-        //     n = n / rho;
-        // }
+        }
 
         result.add(n);
 
@@ -77,17 +62,7 @@ public class CanonicalDistribution {
         return result;
     }
 
-    public static void main(String[] args) {
-        //CanonicalDistribution canon = new CanonicalDistribution(2500744714570633849L);
-        //CanonicalDistribution canon = new CanonicalDistribution(256*53);
-
-        //System.out.println(canon.getDistribution());
-        System.out.println(43*7699*303983L);
-        //System.out.println(43*7699*303983L*24849479L);
-        //System.out.println(2500744714570633849L);
-    }
-
-    private ArrayList<Long> getListPrimes(){
+    private ArrayList<Long> getListPrimes() {
         ArrayList<Long> res = new ArrayList<>();
 
         res.add(2L);
@@ -108,5 +83,4 @@ public class CanonicalDistribution {
 
         return res;
     }
-
 }
