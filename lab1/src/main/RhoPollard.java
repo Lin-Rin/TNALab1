@@ -1,12 +1,8 @@
 package main;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
-
 public class RhoPollard {
 
-    private Tools tool = new Tools();
+    private final Tools tool = new Tools();
 
     public long rhoPollard(long p) {
         long d;
@@ -44,16 +40,27 @@ public class RhoPollard {
 
     public static void main(String[] args) {
         RhoPollard rhoPollard = new RhoPollard();
-        long i = 1021514194991569L;
+        long[] x = new long[]{
+                3009182572376191L,
+                1021514194991569L,
+                4000852962116741L,
+                15196946347083L,
+                499664789704823L,
+                269322119833303L,
+                679321846483919L,
+                96267366284849L,
+                61333127792637L,
+                2485021628404193L
+        };
 
         try {
-            long start = System.nanoTime();
-            long res = rhoPollard.rhoPollard(i);
-            long end = System.nanoTime();
-            System.out.println("result is - " + res + " time - " + (end - start));
-            var t = i / res;
-            System.out.println(t*res);
-            System.out.println(i);
+            for (long l : x) {
+                long start = System.nanoTime();
+                long res = rhoPollard.rhoPollard(l);
+                long end = System.nanoTime();
+
+                System.out.println("Result for " + l + " is " + res + ", time (ns) " + ((end - start)));
+            }
         } catch (Exception e) {
             System.out.println(e);
         }
