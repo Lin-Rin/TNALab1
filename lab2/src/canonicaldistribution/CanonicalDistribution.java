@@ -14,44 +14,73 @@ public class CanonicalDistribution {
         Collections.addAll(PRIMES, x);
     }
 
-    public static long[] getCanonicalDistribution(long n){
-        if(isPrime(n)){
-            System.out.println("prime");
+    public static long[] getCanonicalDistribution(long n) {
+        if (isPrime(n)) {
             return new long[]{n};
         }
+
         ArrayList<Long> res = new ArrayList<>();
 
         var count = 0;
-        while(count != PRIMES.size()){
-            if(n % PRIMES.get(count) == 0){
-               n = n / PRIMES.get(count);
-               res.add(PRIMES.get(count));
+        while (count != PRIMES.size()) {
+            if (n % PRIMES.get(count) == 0) {
+                n = n / PRIMES.get(count);
+                res.add(PRIMES.get(count));
             } else {
                 count++;
             }
         }
 
-        if(n==1){
+        if (n == 1) {
             Collections.sort(res);
             return res.stream().mapToLong(Long::longValue).toArray();
         }
 
-        while(!isPrime(n)) {
+        while (!isPrime(n)) {
             var tempo = rhoPollard(n);
             n = n / tempo;
             res.add(tempo);
-        }
-
-        if(isPrime(n)){
-            res.add(n);
         }
 
         Collections.sort(res);
         return res.stream().mapToLong(Long::longValue).toArray();
     }
 
+    public static ArrayList<Long> getCanonicalDistributionList(long n) {
+        if (isPrime(n)) {
+            return new ArrayList<>(List.of(n));
+        }
+
+        ArrayList<Long> res = new ArrayList<>();
+
+        var count = 0;
+        while (count != PRIMES.size()) {
+            if (n % PRIMES.get(count) == 0) {
+                n = n / PRIMES.get(count);
+                res.add(PRIMES.get(count));
+            } else {
+                count++;
+            }
+        }
+
+        if (n == 1) {
+            Collections.sort(res);
+            return res;
+        }
+
+        while (!isPrime(n)) {
+            var tempo = rhoPollard(n);
+            n = n / tempo;
+            res.add(tempo);
+        }
+
+        Collections.sort(res);
+        return res;
+    }
+
+
     public static void main(String[] args) {
-        System.out.println(Arrays.toString(CanonicalDistribution.getCanonicalDistribution(2*2*3*23*41*96267366284849L)));
+        System.out.println(Arrays.toString(CanonicalDistribution.getCanonicalDistribution(2 * 2 * 3 * 23 * 41 * 96267366284849L)));
     }
 
     private static boolean isPrime(long p) {
@@ -85,6 +114,7 @@ public class CanonicalDistribution {
         }
         return true;
     }
+
     private static long rhoPollard(long p) {
         long d;
         long x = 2;
@@ -114,6 +144,7 @@ public class CanonicalDistribution {
 
         return d;
     }
+
     private static long f(long n, long p) {
         return (n * n + 1) % p;
     }
@@ -128,6 +159,7 @@ public class CanonicalDistribution {
 
         return gcd(b, a % b);
     }
+
     private static int jacobi(long a, long n) {
         if (a < 0 || n % 2 == 0)
             throw new IllegalArgumentException("Wrong argument: (a, n) -- (" + a + ", " + n + ")");
@@ -159,6 +191,7 @@ public class CanonicalDistribution {
 
         return a == 1 ? s : s * jacobi(n, a);
     }
+
     private static long modPow(long a, long e, long p) {
         long result = 1;
         a %= p;
