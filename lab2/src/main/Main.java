@@ -1,27 +1,19 @@
 package main;
 
-import org.apache.commons.math3.primes.Primes;
-
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Function;
+import java.util.Arrays;
 
 //TODO
 // ???  factorization
 // DONE bruteforce
 // algorithm
 
-public class Main {
-    public ArrayList<Integer> factorization(int n){
-        return new ArrayList<>(Primes.primeFactors(n));
-    }
+// КТО
+// gcdExtended
+// invpow + inv
 
+public class Main {
     public static void main(String[] args) {
-        int a = 13;
-        int b = 13;
-        int n = 23;
-        System.out.println( bruteForceSearch(a,b,n));
+        System.out.println(Arrays.toString(gcdExtended(65, 395)));
     }
 
     public static int bruteForceSearch(int a, int b, int n) {
@@ -36,4 +28,29 @@ public class Main {
 
         return 0;
     }
+
+    public static long[] gcdExtended(long a, long b) {
+        long r0 = b, r1 = a;
+        long u0 = 0, u1 = 1; // ?? 01 ?? 10
+        long v0 = 1, v1 = 0; // ?? 10 ?? 01
+
+        while (r1 != 0) {
+            var q = r0 / r1;
+
+            var temp = r0;
+            r0 = r1;
+            r1 = temp - q * r1;
+
+            temp = u0;
+            u0 = u1;
+            u1 = temp - q * u1;
+
+            temp = v0;
+            v0 = v1;
+            v1 = temp - q * v1;
+        }
+
+        return new long[] { r0, u0, v0 };
+    }
+
 }
