@@ -13,9 +13,9 @@ import java.util.stream.IntStream;
 // DONE factorization
 // DONE bruteforce
 // DONE preparation
-// algorithm
+// DONE algorithm
 
-// КТО
+// DONE КТО
 // DONE gcdExtended
 // DONE invPow + inv
 
@@ -81,10 +81,27 @@ public class Main {
 
     private static long CRT(List<Long> y, List<Long> cannon) { // Chinese remainder theorem
         long res = 0;
+        long N = cannon.stream().reduce(1L, (a, b) -> a * b);
 
-        //  ????
+        long[] Ni = new long[cannon.size()];
+        long[] Mi = new long[cannon.size()];
 
-        return res;
+        for(int i = 0; i < cannon.size(); i++){
+            Ni[i] = N / cannon.get(i);
+            Mi[i] = inverse(Ni[i], cannon.get(i));
+        }
+
+        for(int i = 0; i < cannon.size(); i++){
+            res += y.get(i) * Ni[i] * Mi[i];
+        }
+
+//        System.out.println(Arrays.toString(Ni));
+//        System.out.println(Arrays.toString(Mi));
+//        System.out.println(res);
+//        System.out.println(N);
+//        System.out.println(res % N);
+
+        return res % N;
     }
 
     public static long algorithmSilverPohligHellman(long a, long b, long n) {
@@ -92,7 +109,7 @@ public class Main {
         List<Long> cannon = new ArrayList<>(CanonicalDistribution.getCanonicalDistributionList(order));
         List<Long> factors = cannon.stream()
                 .distinct()
-                .collect(Collectors.toList());
+                .toList();
         List<Long> powers = new ArrayList<>(cannon.stream().collect(Collectors.groupingBy(Long::valueOf, Collectors.counting())).values());
         ArrayList<ArrayList<Long>> r = new ArrayList<>();
 
@@ -114,7 +131,6 @@ public class Main {
             r.add(rp);
         }
 
-
 //        System.out.println(factors);
 //        System.out.println(powers);
 //        System.out.println(cannon);
@@ -133,9 +149,9 @@ public class Main {
 
                 num = pow(b * temp1, temp2, n);
 
-                System.out.println(temp1);
-                System.out.println(temp2);
-                System.out.println("in " + num);
+                //System.out.println(temp1);
+                //System.out.println(temp2);
+                //System.out.println("in " + num);
 
                 xi = r.get(i).indexOf(num);
                 xPow = (long) ((xPow + xi * (Math.pow(factors.get(i), j))) % cannon.get(i));
@@ -145,7 +161,8 @@ public class Main {
         }
 
         System.out.println(Y);
-        return CRT(Y, cannon);
+        var result = CRT(Y, cannon);
+        return  result < 0 ? result + n - 1 : result;
     }
 
     private static long pow(long base, long exp, long mod) {
@@ -168,7 +185,9 @@ public class Main {
         var a = 5;
         var b = 11;
 
-        algorithmSilverPohligHellman(a, b, q);
+//        System.out.println(algorithmSilverPohligHellman(a, b, q));
+//        System.out.println(algorithmSilverPohligHellman(3, 15, 43));
+        System.out.println(algorithmSilverPohligHellman(5, 11, 97));
     }
 
 }
