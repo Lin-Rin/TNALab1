@@ -74,13 +74,10 @@ public class CanonicalDistribution {
             res.add(tempo);
         }
 
+        res.add(n);
+
         Collections.sort(res);
         return res;
-    }
-
-
-    public static void main(String[] args) {
-        System.out.println(Arrays.toString(CanonicalDistribution.getCanonicalDistribution(2 * 2 * 3 * 23 * 41 * 96267366284849L)));
     }
 
     private static boolean isPrime(long p) {

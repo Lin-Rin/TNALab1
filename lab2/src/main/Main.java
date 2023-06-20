@@ -12,6 +12,7 @@ import java.util.stream.IntStream;
 //TODO
 // DONE factorization
 // DONE bruteforce
+// DONE preparation
 // algorithm
 
 // КТО
@@ -33,7 +34,7 @@ public class Main {
         return 0;
     }
 
-    public static long[] gcdExtended(long a, long b) {
+    private static long[] gcdExtended(long a, long b) {
         long r0 = b, r1 = a;
         long u0 = 0, u1 = 1; // ?? 01 ?? 10
         long v0 = 1, v1 = 0; // ?? 10 ?? 01
@@ -57,7 +58,7 @@ public class Main {
         return new long[]{r0, u0, v0};
     }
 
-    public static long inverse(long a, long b) {
+    private static long inverse(long a, long b) {
         var gcd = gcdExtended(a, b);
         if (gcd[0] != 1) {
             throw new IllegalArgumentException("Inverse do not exist");
@@ -65,7 +66,7 @@ public class Main {
         return gcd[1];
     }
 
-    public static long inversePow(long a, long x, long n) {
+    private static long inversePow(long a, long x, long n) {
         if (x == 0) {
             return 1;
         }
@@ -78,9 +79,11 @@ public class Main {
         return inverse(b, n) % n;
     }
 
-    public static long CRT() { // Chinese remainder theorem
+    private static long CRT(List<Long> y, List<Long> cannon) { // Chinese remainder theorem
         long res = 0;
+
         //  ????
+
         return res;
     }
 
@@ -91,27 +94,60 @@ public class Main {
                 .distinct()
                 .collect(Collectors.toList());
         List<Long> powers = new ArrayList<>(cannon.stream().collect(Collectors.groupingBy(Long::valueOf, Collectors.counting())).values());
-        ArrayList<Long> r = new ArrayList<>();
+        ArrayList<ArrayList<Long>> r = new ArrayList<>();
 
         System.out.println(cannon);
 
         cannon.clear();
         cannon = IntStream.range(0, powers.size())
-                .mapToLong(i -> (long) Math.pow(factors.get(i), powers.get(i))).boxed().collect(Collectors.toList());
+                .mapToLong(i -> (long) Math.pow(factors.get(i), powers.get(i))).
+                boxed().
+                collect(Collectors.toList());
+
+        for (long p : factors) {
+            ArrayList<Long> rp = new ArrayList<>();
+
+            for (int i = 0; i < p; i++) {
+                long res = pow(a, ((order * i) / p), n);
+                rp.add(res);
+            }
+            r.add(rp);
+        }
+
 
         System.out.println(factors);
         System.out.println(powers);
         System.out.println(cannon);
         System.out.println(r);
 
+        ArrayList<Long> Y = new ArrayList<>();
 
-        return CRT();
+        for (int i = 0; i < factors.size(); i++) {
+            // ??
+        }
+
+        return CRT(Y, cannon);
+    }
+
+    private static long pow(long base, long exp, long mod) {
+        var res = 1L;
+
+        while (exp > 0) {
+            if (exp % 2 == 1) {
+                res = (res * base) % mod;
+            }
+
+            base = (base * base) % mod;
+            exp /= 2;
+        }
+
+        return res;
     }
 
     public static void main(String[] args) {
-        var q = 1009;
+        var q = 607;
 
-        algorithmSilverPohligHellman(0, 1, q);
+        algorithmSilverPohligHellman(64, 122, q);
     }
 
 }
