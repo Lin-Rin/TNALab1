@@ -96,7 +96,7 @@ public class Main {
         List<Long> powers = new ArrayList<>(cannon.stream().collect(Collectors.groupingBy(Long::valueOf, Collectors.counting())).values());
         ArrayList<ArrayList<Long>> r = new ArrayList<>();
 
-        System.out.println(cannon);
+//        System.out.println(cannon);
 
         cannon.clear();
         cannon = IntStream.range(0, powers.size())
@@ -115,17 +115,36 @@ public class Main {
         }
 
 
-        System.out.println(factors);
-        System.out.println(powers);
-        System.out.println(cannon);
-        System.out.println(r);
+//        System.out.println(factors);
+//        System.out.println(powers);
+//        System.out.println(cannon);
+//        System.out.println(r);
 
         ArrayList<Long> Y = new ArrayList<>();
 
         for (int i = 0; i < factors.size(); i++) {
-            // ??
+            var num = pow(b, order / factors.get(i), n);
+            long xi = r.get(i).indexOf(num);
+            long xPow = xi;
+
+            for(int j = 1; j < powers.get(i); j++){
+                var temp1 = inversePow(a, -xPow, n) < 0 ? inversePow(a, -xPow, n) + n : inversePow(a, -xPow, n);
+                var temp2 = (long) (order / (Math.pow(factors.get(i), j + 1)));
+
+                num = pow(b * temp1, temp2, n);
+
+                System.out.println(temp1);
+                System.out.println(temp2);
+                System.out.println("in " + num);
+
+                xi = r.get(i).indexOf(num);
+                xPow = (long) ((xPow + xi * (Math.pow(factors.get(i), j))) % cannon.get(i));
+            }
+
+            Y.add(xPow);
         }
 
+        System.out.println(Y);
         return CRT(Y, cannon);
     }
 
@@ -145,9 +164,11 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        var q = 607;
+        var q = 73;
+        var a = 5;
+        var b = 11;
 
-        algorithmSilverPohligHellman(64, 122, q);
+        algorithmSilverPohligHellman(a, b, q);
     }
 
 }
