@@ -1,26 +1,56 @@
 package main;
 
 import java.io.*;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.OptionalInt;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.IntStream;
 
 public class IndexCalculus {
 
-    private static ArrayList<ArrayList<Long>> preparation(long a, long n, ArrayList<Long> S) {
-        throw new UnsupportedOperationException();
+    private static final long C = 20;
+
+    private static Map<Boolean, ArrayList<Long>> isSmooth(long value, ArrayList<Long> S) {
+        long[] res = new long[S.size()];
+
+        for (int i = 0; i < S.size(); i++) {
+            while (value % S.get(i) == 0) {
+                res[i] += 1;
+                value = value / S.get(i);
+            }
+        }
+
+        HashMap<Boolean, ArrayList<Long>> temp = new HashMap<>();
+        ArrayList<Long> list = new ArrayList<>();
+        Arrays.stream(res).forEach(list::add);
+
+        if (value != 1) {
+            temp.put(false, list);
+        } else {
+            temp.put(true, list);
+        }
+
+        return temp;
     }
 
     private static ArrayList<Long> solve() {
         throw new UnsupportedOperationException();
     }
 
+    public static long algorithmIndexCalculus(long a, long b, long n) {
+        double c = 3.38;
+        long B =  (long) (c * Math.exp(0.5 * Math.sqrt(log2(n) * log2(log2(n)))));
+
+
+
+        return 0;
+    }
+
+    public static void main(String[] args) {
+        algorithmIndexCalculus(5,11,97);
+    }
+
     private static List<Long> factorBase(long B) {
         try {
-        var temp = getPrimeNumbers();
+            var temp = getPrimeNumbers();
             OptionalInt index = IntStream.range(0, temp.size())
                     .filter(i -> temp.get(i) > B)
                     .findFirst();
@@ -31,26 +61,6 @@ public class IndexCalculus {
         }
     }
 
-    public static long algorithmIndexCalculus(long a, long b, long n) {
-        long B = (long) ((long) 3.38 * Math.exp(0.5 * Math.pow(log2(n * log2(log2(n))), 0.5)));
-        System.out.println(B);
-        ArrayList<Long> S = new ArrayList<>(factorBase(B));
-        System.out.println(S);
-
-        var temp = preparation(a, n, S);
-        ArrayList<Long> K = temp.get(0);
-        temp.remove(0);
-        ArrayList<ArrayList<Long>> A = new ArrayList<>(temp);
-
-        ArrayList<Long> x = solve();
-
-
-        return 0;
-    }
-
-    public static void main(String[] args) {
-        algorithmIndexCalculus(5,11,97);
-    }
 
     // --------------------------- tools ---------------------------
     private static long pow(long base, long exp, long mod) {
@@ -160,6 +170,7 @@ public class IndexCalculus {
     private static double log2(double num) {
         return Math.log(num) / Math.log(2);
     }
+
 
     // --------------------------- file tools ---------------------------
     private final static String FILE_PATH1 = "lab3/src/res/primes100k.txt";
