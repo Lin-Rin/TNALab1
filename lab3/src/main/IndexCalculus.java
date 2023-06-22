@@ -4,7 +4,9 @@ import java.io.*;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.OptionalInt;
 import java.util.Random;
+import java.util.stream.IntStream;
 
 public class IndexCalculus {
 
@@ -18,7 +20,12 @@ public class IndexCalculus {
 
     private static List<Long> factorBase(long B) {
         try {
-            return getPrimeNumbers().subList(0, (int) (B + 1));
+        var temp = getPrimeNumbers();
+            OptionalInt index = IntStream.range(0, temp.size())
+                    .filter(i -> temp.get(i) > B)
+                    .findFirst();
+
+            return temp.subList(0, index.getAsInt());
         } catch (IOException e) {
             throw new RuntimeException("Files with prime number NOT FOUND");
         }
@@ -26,6 +33,7 @@ public class IndexCalculus {
 
     public static long algorithmIndexCalculus(long a, long b, long n) {
         long B = (long) ((long) 3.38 * Math.exp(0.5 * Math.pow(log2(n * log2(log2(n))), 0.5)));
+        System.out.println(B);
         ArrayList<Long> S = new ArrayList<>(factorBase(B));
         System.out.println(S);
 
