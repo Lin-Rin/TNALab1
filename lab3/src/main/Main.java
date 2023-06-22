@@ -2,7 +2,7 @@ package main;
 
 public class Main {
 
-    private static void runAlgorithmSilverPohligHellman(long a, long b, long n) {
+    private static void runAlgorithmIndexCalculus(long a, long b, long n) {
         throw new UnsupportedOperationException();
     }
 
