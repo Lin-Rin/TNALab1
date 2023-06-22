@@ -63,20 +63,63 @@ public class IndexCalculus {
         return temp;
     }
 
-    private static ArrayList<Long> solveSystem(ArrayList<ArrayList<Long>> _A, ArrayList<Long> _b, long mod) {
-        long n = _A.size();
-        long m = _A.get(0).size();
-        ArrayList<ArrayList<Long>> A = concatenateArraysList(_A, _b);
+    private static ArrayList<Long> solveSystem(ArrayList<ArrayList<Long>> _A, ArrayList<Long> b, long mod) {
+        int n = _A.size();
+        int m = _A.get(0).size();
+        ArrayList<ArrayList<Long>> A = concatenateArraysList(_A, b);
+        ArrayList<Long> chosen = new ArrayList<>();
+        System.out.println("mod " + mod);
+        for (int j = 0; j < m; j++) {
+            boolean isFound = false;
 
-        for(ArrayList<Long> x : A){
-            System.out.println(x);
+            for (int i = 0; i < n; i++) {
+                if(chosen.contains(i)){
+                    continue;
+                }
+
+                System.out.println(gcd(A.get(i).get(j), mod));
+                if(gcd(A.get(i).get(j), mod) == 1){
+                    chosen.add((long) i);
+                    break;
+                }
+
+                //System.out.println("chosen " + chosen);
+            }
         }
 
         throw new UnsupportedOperationException();
     }
 
-    private static long findIndex(long a, long b, long n, ArrayList<Long> S, ArrayList<Long> SIndexes){
-        throw new UnsupportedOperationException();
+    private static long findIndex(long a, long b, long n, ArrayList<Long> S, ArrayList<Long> SIndexes) {
+        var currentIndex = 0;
+        var currentValue = b;
+
+        for (int i = 0; i < n - 1; i++) {
+            var temp = isSmooth(currentValue, S);
+            boolean isSmooth = temp.keySet().iterator().next();
+
+            if (isSmooth) {
+                return (dotProduct(SIndexes, temp.get(isSmooth)) - currentIndex) % (n - 1);
+            }
+
+            currentIndex++;
+            currentValue = (currentValue * a) % n;
+        }
+
+        return -1L;
+    }
+
+    public static int dotProduct(List<Long> list1, List<Long> list2) {
+        if (list1.size() != list2.size()) {
+            throw new IllegalArgumentException("List must to have equal sizes.");
+        }
+
+        int res = 0;
+        for (int i = 0; i < list1.size(); i++) {
+            res += list1.get(i) * list2.get(i);
+        }
+
+        return res;
     }
 
     public static long algorithmIndexCalculus(long alpha, long beta, long n) {
@@ -86,13 +129,14 @@ public class IndexCalculus {
         var temp = generateEquationSystem(alpha, n, S);
         var b = temp.keySet().iterator().next();
         var A = temp.get(b);
-        solveSystem(A, b, n - 1);
 
-        return findIndex(0, 0, 0, null, null);
+        var SIndexes = new ArrayList<>(List.of(34L, 70L, 1L, 31L, 86L, 25L, 89L, 81L, 77L));
+//        var SIndexes = solveSystem(A, b, n - 1);
+        return findIndex(alpha, beta, n, S, SIndexes);
     }
 
     public static void main(String[] args) {
-        algorithmIndexCalculus(5, 11, 97);
+        System.out.println("Result is - " + algorithmIndexCalculus(5, 11, 97));
     }
 
     private static ArrayList<Long> factorBase(long B) {
@@ -123,6 +167,39 @@ public class IndexCalculus {
         return A;
     }
 
+    private static ArrayList<Long> multiplyRow(List<Long> row, long multiplier, long mod) {
+        ArrayList<Long> res = new ArrayList<>();
+        for (Long element : row) {
+            res.add((element * multiplier) % mod);
+        }
+        return res;
+    }
+
+
+    private static ArrayList<Long> subtractRows(List<Long> row1, List<Long> row2, long mod) {
+        ArrayList<Long> res = new ArrayList<>();
+        for (int i = 0; i < row1.size(); i++) {
+            res.add((row1.get(i) - row2.get(i) + mod) % mod);
+        }
+        return res;
+    }
+
+    private static boolean allElementsDivisible(List<Long> arr, long divisor) {
+        for (long element : arr) {
+            if (element % divisor != 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static ArrayList<Long> divideRow(List<Long> row, long divisor) {
+        ArrayList<Long> result = new ArrayList<>();
+        for (Long element : row) {
+            result.add(element / divisor);
+        }
+        return result;
+    }
 
     // --------------------------- tools ---------------------------
     private static long pow(long base, long exp, long mod) {
@@ -140,7 +217,7 @@ public class IndexCalculus {
         return res;
     }
 
-    private long gcd(long a, long b) {
+    private static long gcd(long a, long b) {
         if (b == 0) {
             return a;
         }
@@ -151,7 +228,7 @@ public class IndexCalculus {
         return gcd(b, a % b);
     }
 
-    private boolean isPrime(long p) {
+    private static boolean isPrime(long p) {
         if (p % 2 == 0) {
             return false;
         }
@@ -183,7 +260,7 @@ public class IndexCalculus {
         return true;
     }
 
-    private int jacobi(long a, long n) {
+    private static int jacobi(long a, long n) {
         if (a < 0 || n % 2 == 0)
             throw new IllegalArgumentException("Wrong argument: (a, n) -- (" + a + ", " + n + ")");
         if (a == 0)
@@ -215,7 +292,7 @@ public class IndexCalculus {
         return a == 1 ? s : s * jacobi(n, a);
     }
 
-    private long modPow(long a, long e, long p) {
+    private static long modPow(long a, long e, long p) {
         long result = 1;
         a %= p;
 
