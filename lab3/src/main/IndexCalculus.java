@@ -60,24 +60,35 @@ public class IndexCalculus {
         var temp = new HashMap<ArrayList<Long>, ArrayList<ArrayList<Long>>>();
         temp.put(b, A);
 
-        System.out.println("A -- " + A);
-        System.out.println("b -- " + b);
-
         return temp;
     }
 
-    private static ArrayList<Long> solveSystem() {
+    private static ArrayList<Long> solveSystem(ArrayList<ArrayList<Long>> _A, ArrayList<Long> _b, long mod) {
+        long n = _A.size();
+        long m = _A.get(0).size();
+        ArrayList<ArrayList<Long>> A = concatenateArraysList(_A, _b);
+
+        for(ArrayList<Long> x : A){
+            System.out.println(x);
+        }
+
         throw new UnsupportedOperationException();
     }
 
-    public static long algorithmIndexCalculus(long a, long b, long n) {
+    private static long findIndex(long a, long b, long n, ArrayList<Long> S, ArrayList<Long> SIndexes){
+        throw new UnsupportedOperationException();
+    }
+
+    public static long algorithmIndexCalculus(long alpha, long beta, long n) {
         double c = 3.38;
         long B = (long) (c * Math.exp(0.5 * Math.sqrt(log2(n) * log2(log2(n)))));
         ArrayList<Long> S = factorBase(B);
+        var temp = generateEquationSystem(alpha, n, S);
+        var b = temp.keySet().iterator().next();
+        var A = temp.get(b);
+        solveSystem(A, b, n - 1);
 
-        generateEquationSystem(a, n, S);
-
-        return 0;
+        return findIndex(0, 0, 0, null, null);
     }
 
     public static void main(String[] args) {
@@ -95,6 +106,21 @@ public class IndexCalculus {
         } catch (IOException e) {
             throw new RuntimeException("Files with prime number NOT FOUND");
         }
+    }
+
+    private static ArrayList<ArrayList<Long>> concatenateArraysList(ArrayList<ArrayList<Long>> _A, ArrayList<Long> _b) {
+        ArrayList<ArrayList<Long>> A = new ArrayList<>();
+
+        _A.forEach(innerList -> {
+            ArrayList<Long> concatenatedList = new ArrayList<>(innerList);
+            A.add(concatenatedList);
+        });
+
+        for (int i = 0; i < A.size(); i++) {
+            A.get(i).add(_b.get(i));
+        }
+
+        return A;
     }
 
 
