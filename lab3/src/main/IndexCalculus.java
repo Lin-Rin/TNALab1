@@ -31,31 +31,67 @@ public class IndexCalculus {
         return temp;
     }
 
-    private static ArrayList<Long> solve() {
+    private static Map<ArrayList<Long>, ArrayList<ArrayList<Long>>> generateEquationSystem(long a, long n, ArrayList<Long> S) {
+        ArrayList<Long> b = new ArrayList<>();
+        ArrayList<ArrayList<Long>> A = new ArrayList<>();
+        long numbersOfEquation = C + S.size();
+
+        long currentPower = 1;
+        long currentValue = a;
+
+        while (b.size() < numbersOfEquation) {
+            var temp = isSmooth(currentValue, S);
+            boolean isSmooth = temp.keySet().iterator().next();
+            ArrayList<Long> pows = temp.get(isSmooth);
+
+            if (isSmooth) {
+                A.add(pows);
+                b.add(currentPower);
+            }
+
+            currentValue = (currentValue * a) % n;
+            currentPower += 1;
+
+            if (currentValue == 1) {
+                break;
+            }
+        }
+
+        var temp = new HashMap<ArrayList<Long>, ArrayList<ArrayList<Long>>>();
+        temp.put(b, A);
+
+        System.out.println("A -- " + A);
+        System.out.println("b -- " + b);
+
+        return temp;
+    }
+
+    private static ArrayList<Long> solveSystem() {
         throw new UnsupportedOperationException();
     }
 
     public static long algorithmIndexCalculus(long a, long b, long n) {
         double c = 3.38;
-        long B =  (long) (c * Math.exp(0.5 * Math.sqrt(log2(n) * log2(log2(n)))));
+        long B = (long) (c * Math.exp(0.5 * Math.sqrt(log2(n) * log2(log2(n)))));
+        ArrayList<Long> S = factorBase(B);
 
-
+        generateEquationSystem(a, n, S);
 
         return 0;
     }
 
     public static void main(String[] args) {
-        algorithmIndexCalculus(5,11,97);
+        algorithmIndexCalculus(5, 11, 97);
     }
 
-    private static List<Long> factorBase(long B) {
+    private static ArrayList<Long> factorBase(long B) {
         try {
             var temp = getPrimeNumbers();
             OptionalInt index = IntStream.range(0, temp.size())
                     .filter(i -> temp.get(i) > B)
                     .findFirst();
 
-            return temp.subList(0, index.getAsInt());
+            return new ArrayList<>(temp.subList(0, index.getAsInt()));
         } catch (IOException e) {
             throw new RuntimeException("Files with prime number NOT FOUND");
         }
