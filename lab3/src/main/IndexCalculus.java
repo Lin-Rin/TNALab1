@@ -68,26 +68,63 @@ public class IndexCalculus {
         int m = _A.get(0).size();
         ArrayList<ArrayList<Long>> A = concatenateArraysList(_A, b);
         ArrayList<Long> chosen = new ArrayList<>();
-        System.out.println("mod " + mod);
-        for (int j = 0; j < m; j++) {
-            boolean isFound = false;
 
+        var x = 0;
+        for (int j = 0; j < m; j++) {
+            var found = false;
             for (int i = 0; i < n; i++) {
-                if(chosen.contains(i)){
+                if (chosen.contains((long) i)) {
                     continue;
                 }
 
-                System.out.println(gcd(A.get(i).get(j), mod));
-                if(gcd(A.get(i).get(j), mod) == 1){
+                if (gcd(A.get(i).get(j), mod) == 1) {
+                    x++;
                     chosen.add((long) i);
+                    found = true;
+
+                    long inv = pow(A.get(i).get(j), -1, mod);
+                    for (ArrayList<Long> innerList : A) {
+                        for (int l = 0; l < innerList.size(); l++) {
+                            long value = innerList.get(l);
+                            value = (value * inv) % mod;
+                            innerList.set(l, value);
+                        }
+                    }
+
+
                     break;
                 }
 
-                //System.out.println("chosen " + chosen);
             }
+
         }
 
-        throw new UnsupportedOperationException();
+        for (var el : A) {
+            System.out.println(el);
+        }
+
+        System.out.println("x- " + x);
+        System.out.println(chosen);
+
+
+
+        ArrayList<Long> solve = new ArrayList<>();
+        for (int j = 0; j < m; j++) {
+            boolean isAdded = false;
+            for (int i = 0; i < n; i++) {
+                if (A.get(i).get(j) != 0) {
+                    solve.add(A.get(i).get(A.get(i).size() - 1));
+                    isAdded = true;
+                    break;
+                }
+            }
+
+            if (!isAdded) {
+                solve.add(0L);
+            }
+
+        }
+        return solve;
     }
 
     private static long findIndex(long a, long b, long n, ArrayList<Long> S, ArrayList<Long> SIndexes) {
@@ -109,14 +146,14 @@ public class IndexCalculus {
         return -1L;
     }
 
-    public static int dotProduct(List<Long> list1, List<Long> list2) {
-        if (list1.size() != list2.size()) {
+    public static int dotProduct(List<Long> a, List<Long> b) {
+        if (a.size() != b.size()) {
             throw new IllegalArgumentException("List must to have equal sizes.");
         }
 
         int res = 0;
-        for (int i = 0; i < list1.size(); i++) {
-            res += list1.get(i) * list2.get(i);
+        for (int i = 0; i < a.size(); i++) {
+            res += a.get(i) * b.get(i);
         }
 
         return res;
@@ -130,8 +167,8 @@ public class IndexCalculus {
         var b = temp.keySet().iterator().next();
         var A = temp.get(b);
 
-        var SIndexes = new ArrayList<>(List.of(34L, 70L, 1L, 31L, 86L, 25L, 89L, 81L, 77L));
-//        var SIndexes = solveSystem(A, b, n - 1);
+        // var SIndexes = new ArrayList<>(List.of(34L, 70L, 1L, 31L, 86L, 25L, 89L, 81L, 77L));
+        var SIndexes = solveSystem(A, b, n - 1);
         return findIndex(alpha, beta, n, S, SIndexes);
     }
 
@@ -174,7 +211,6 @@ public class IndexCalculus {
         }
         return res;
     }
-
 
     private static ArrayList<Long> subtractRows(List<Long> row1, List<Long> row2, long mod) {
         ArrayList<Long> res = new ArrayList<>();
@@ -381,3 +417,71 @@ public class IndexCalculus {
         return resultStringBuilder.toString();
     }
 }
+
+/* java
+
+0 0 1 0 0 0 0 0 0 1
+0 0 2 0 0 0 0 0 0 2
+2 0 0 1 0 0 0 0 0 3
+0 1 0 1 0 0 0 0 0 5
+3 0 0 0 0 0 0 0 0 6
+3 0 1 0 0 0 0 0 0 7
+1 1 0 0 0 0 0 0 0 8
+1 1 1 0 0 0 0 0 0 9
+6 0 0 0 0 0 0 0 0 12
+4 1 0 0 0 0 0 0 0 14
+1 0 0 0 0 0 0 0 1 15
+2 2 0 0 0 0 0 0 0 16
+0 3 0 0 0 0 0 0 0 18
+1 0 0 0 0 0 0 1 0 19
+0 0 0 1 1 0 0 0 0 21
+1 0 0 0 1 0 0 0 0 24
+0 0 0 0 0 1 0 0 0 25
+0 0 1 0 0 1 0 0 0 26
+1 0 0 0 0 0 1 0 0 27
+0 0 0 1 0 0 0 0 0 31
+0 0 1 1 0 0 0 0 0 32
+1 1 0 0 0 1 0 0 0 33
+1 0 0 0 0 0 0 0 0 34
+1 0 1 0 0 0 0 0 0 35
+1 0 2 0 0 0 0 0 0 36
+3 0 0 1 0 0 0 0 0 37
+1 1 0 1 0 0 0 0 0 39
+4 0 0 0 0 0 0 0 0 40
+4 0 1 0 0 0 0 0 0 41
+
+ */
+
+/* python
+
+0 0 1 0 0 0 0 0 0 1
+0 0 2 0 0 0 0 0 0 2
+2 0 0 1 0 0 0 0 0 3
+0 1 0 1 0 0 0 0 0 5
+3 0 0 0 0 0 0 0 0 6
+3 0 1 0 0 0 0 0 0 7
+1 1 0 0 0 0 0 0 0 8
+1 1 1 0 0 0 0 0 0 9
+6 0 0 0 0 0 0 0 0 12
+4 1 0 0 0 0 0 0 0 14
+1 0 0 0 0 0 0 0 1 15
+2 2 0 0 0 0 0 0 0 16
+0 3 0 0 0 0 0 0 0 18
+1 0 0 0 0 0 0 1 0 19
+0 0 0 1 1 0 0 0 0 21
+1 0 0 0 1 0 0 0 0 24
+0 0 0 0 0 1 0 0 0 25
+0 0 1 0 0 1 0 0 0 26
+1 0 0 0 0 0 1 0 0 27
+0 0 0 1 0 0 0 0 0 31
+0 0 1 1 0 0 0 0 0 32
+1 1 0 0 0 1 0 0 0 33
+1 0 0 0 0 0 0 0 0 34
+1 0 1 0 0 0 0 0 0 35
+1 0 2 0 0 0 0 0 0 36
+3 0 0 1 0 0 0 0 0 37
+1 1 0 1 0 0 0 0 0 39
+4 0 0 0 0 0 0 0 0 40
+4 0 1 0 0 0 0 0 0 41
+
+ */
